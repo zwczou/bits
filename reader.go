@@ -18,7 +18,7 @@ type Reader struct {
 func NewReader(ir io.Reader) *Reader {
 	return &Reader{
 		br:         NewBitReader(ir),
-		checkError: Check(),
+		checkError: Must(),
 	}
 }
 

@@ -16,7 +16,7 @@ type Writer struct {
 func NewWriter(iw io.Writer) *Writer {
 	return &Writer{
 		bw:         NewBitWriter(iw),
-		checkError: Check(),
+		checkError: Must(),
 	}
 }
 
