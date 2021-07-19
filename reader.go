@@ -10,6 +10,11 @@ type Reader struct {
 	checkError CheckError
 }
 
+// 默认出错直接panic，所以需要在上层做一些长度等判断
+// 如果需要自己判断错误，则用
+// br := NewReader(iw).Check()
+// br.ReadBool()
+// br.Error() // 检查ReadBool()错误
 func NewReader(ir io.Reader) *Reader {
 	return &Reader{
 		br:         NewBitReader(ir),
@@ -20,13 +25,19 @@ func NewReader(ir io.Reader) *Reader {
 func NewReaderBuffer(buf []byte) *Reader {
 	return &Reader{
 		br:         NewBitReaderBuffer(buf),
-		checkError: Check(),
+		checkError: Must(),
 	}
 }
 
 // 错误直接panic
 func (r *Reader) Must() *Reader {
 	r.checkError = Must()
+	return r
+}
+
+// 需要每次判断r.Error()
+func (r *Reader) Check() *Reader {
+	r.checkError = Check()
 	return r
 }
 

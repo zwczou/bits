@@ -8,6 +8,11 @@ type Writer struct {
 	err        error
 }
 
+// 默认出错直接panic，所以需要在上层做一些长度等判断
+// 如果需要自己判断错误，则用
+// bw := NewWriter(iw).Check() // 初始化
+// bw.WriteBool(false)
+// bw.Error() // 检查bw.WriteBool出错
 func NewWriter(iw io.Writer) *Writer {
 	return &Writer{
 		bw:         NewBitWriter(iw),
@@ -18,12 +23,18 @@ func NewWriter(iw io.Writer) *Writer {
 func NewWriterBuffer(buf []byte) *Writer {
 	return &Writer{
 		bw:         NewBitWriterBuffer(buf),
-		checkError: Check(),
+		checkError: Must(),
 	}
 }
 
 func (w *Writer) Must() *Writer {
 	w.checkError = Must()
+	return w
+}
+
+// 需要每次判断w.Error()
+func (w *Writer) Check() *Writer {
+	w.checkError = Check()
 	return w
 }
 
