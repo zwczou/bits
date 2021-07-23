@@ -49,6 +49,10 @@ func (r *Reader) Index() int {
 	return r.br.Index()
 }
 
+func (r *Reader) SetIndex(idx int) {
+	r.br.SetIndex(idx)
+}
+
 func (r *Reader) Reset(ir io.Reader) {
 	r.br.Reset(ir)
 }

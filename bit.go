@@ -37,9 +37,14 @@ func (br *BitReader) Index() int {
 	return br.idx
 }
 
+func (br *BitReader) SetIndex(idx int) {
+	br.idx = idx
+}
+
 func (br *BitReader) Reset(ir io.Reader) {
 	br.r = ir
 	br.b[0] = 0x00
+	br.idx = 0
 	br.count = 0
 }
 
@@ -206,6 +211,10 @@ func (bw *BitWriter) Index() int {
 	return bw.idx
 }
 
+func (bw *BitWriter) SetIndex(idx int) {
+	bw.idx = idx
+}
+
 func (bw *BitWriter) Resume(data byte, count uint8) {
 	bw.b[0] = data
 	bw.count = count
@@ -214,6 +223,7 @@ func (bw *BitWriter) Resume(data byte, count uint8) {
 func (bw *BitWriter) Reset(iw io.Writer) {
 	bw.w = iw
 	bw.b[0] = 0x00
+	bw.idx = 0
 	bw.count = 8
 }
 
