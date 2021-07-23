@@ -3,7 +3,6 @@
 package bits
 
 import (
-	"bytes"
 	"io"
 )
 
@@ -29,7 +28,9 @@ func NewBitReader(r io.Reader) *BitReader {
 
 func NewBitReaderBuffer(buf []byte) *BitReader {
 	return &BitReader{
-		r: bytes.NewReader(buf),
+		r: &bufReader{
+			buf: buf,
+		},
 	}
 }
 
@@ -161,23 +162,6 @@ func (br *BitReader) IsAligned() bool {
 
 func (br *BitReader) Align() {
 	br.Skip(int(br.count))
-}
-
-type bufWriter struct {
-	buf []byte
-	idx int
-}
-
-func (w *bufWriter) Write(b []byte) (n int, err error) {
-	if len(b) > len(w.buf)-w.idx {
-		err = io.ErrUnexpectedEOF
-		return
-	}
-	for _, c := range b {
-		w.buf[w.idx] = c
-		w.idx++
-	}
-	return len(b), nil
 }
 
 type BitWriter struct {
