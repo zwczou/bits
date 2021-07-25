@@ -53,10 +53,6 @@ func (w *Writer) Index() int {
 	return w.bw.Index()
 }
 
-func (w *Writer) SetIndex(idx int) {
-	w.bw.SetIndex(idx)
-}
-
 func (w *Writer) Reset(iw io.Writer) {
 	w.bw.Reset(iw)
 }
