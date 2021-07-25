@@ -45,6 +45,14 @@ func (r *Reader) Error() error {
 	return r.err
 }
 
+// 只能保留最后一个错误
+func (r *Reader) setError(err error) {
+	err = r.checkError(err)
+	if err != nil {
+		r.err = err
+	}
+}
+
 func (r *Reader) Index() int {
 	return r.br.Index()
 }
@@ -59,62 +67,62 @@ func (r *Reader) Reset(ir io.Reader) {
 
 func (r *Reader) Read(b []byte) int {
 	n, err := r.br.Read(b)
-	r.err = r.checkError(err)
+	r.setError(err)
 	return n
 }
 
 func (r *Reader) ReadBool() bool {
 	b, err := r.br.ReadBit()
-	r.err = r.checkError(err)
+	r.setError(err)
 	return bool(b)
 }
 
 func (r *Reader) ReadUint8(nbits int) uint8 {
 	if nbits > 8 {
-		r.err = r.checkError(ErrOverflow)
+		r.setError(ErrOverflow)
 		return 0
 	}
 
 	u, err := r.br.ReadBits(nbits)
-	r.err = r.checkError(err)
+	r.setError(err)
 	return uint8(u)
 }
 
 func (r *Reader) ReadUint16(nbits int) uint16 {
 	if nbits > 16 {
-		r.err = r.checkError(ErrOverflow)
+		r.setError(ErrOverflow)
 		return 0
 	}
 
 	u, err := r.br.ReadBits(nbits)
-	r.err = r.checkError(err)
+	r.setError(err)
 	return uint16(u)
 }
 
 func (r *Reader) ReadUint32(nbits int) uint32 {
 	if nbits > 32 {
-		r.err = r.checkError(ErrOverflow)
+		r.setError(ErrOverflow)
 		return 0
 	}
 
 	u, err := r.br.ReadBits(nbits)
-	r.err = r.checkError(err)
+	r.setError(err)
 	return uint32(u)
 }
 
 func (r *Reader) ReadUint64(nbits int) uint64 {
 	if nbits > 64 {
-		r.err = r.checkError(ErrOverflow)
+		r.setError(ErrOverflow)
 		return 0
 	}
 
 	u, err := r.br.ReadBits(nbits)
-	r.err = r.checkError(err)
+	r.setError(err)
 	return u
 }
 
 func (r *Reader) Skip(nbits int) {
-	r.err = r.checkError(r.br.Skip(nbits))
+	r.setError(r.br.Skip(nbits))
 }
 
 func (r *Reader) Align() {
