@@ -42,7 +42,7 @@ func (w *Writer) Error() error {
 	return w.err
 }
 
-func (w *Writer) setError(err error) {
+func (w *Writer) SetError(err error) {
 	err = w.checkError(err)
 	if err != nil {
 		w.err = err
@@ -63,52 +63,52 @@ func (w *Writer) Resume(data byte, count uint8) {
 
 func (w *Writer) Write(b []byte) (n int) {
 	n, err := w.bw.Write(b)
-	w.setError(err)
+	w.SetError(err)
 	return n
 }
 
 func (w *Writer) WriteBool(v bool) {
-	w.setError(w.bw.WriteBit(Bit(v)))
+	w.SetError(w.bw.WriteBit(Bit(v)))
 }
 
 func (w *Writer) WriteUint8(u uint8, nbits int) {
 	if nbits > 8 {
-		w.setError(ErrOverflow)
+		w.SetError(ErrOverflow)
 		return
 	}
 
-	w.setError(w.bw.WriteBits(uint64(u), nbits))
+	w.SetError(w.bw.WriteBits(uint64(u), nbits))
 }
 
 func (w *Writer) WriteUint16(u uint16, nbits int) {
 	if nbits > 16 {
-		w.setError(ErrOverflow)
+		w.SetError(ErrOverflow)
 		return
 	}
 
-	w.setError(w.bw.WriteBits(uint64(u), nbits))
+	w.SetError(w.bw.WriteBits(uint64(u), nbits))
 }
 
 func (w *Writer) WriteUint32(u uint32, nbits int) {
 	if nbits > 32 {
-		w.setError(ErrOverflow)
+		w.SetError(ErrOverflow)
 		return
 	}
 
-	w.setError(w.bw.WriteBits(uint64(u), nbits))
+	w.SetError(w.bw.WriteBits(uint64(u), nbits))
 }
 
 func (w *Writer) WriteUint64(u uint64, nbits int) {
 	if nbits > 64 {
-		w.setError(ErrOverflow)
+		w.SetError(ErrOverflow)
 		return
 	}
 
-	w.setError(w.bw.WriteBits(u, nbits))
+	w.SetError(w.bw.WriteBits(u, nbits))
 }
 
 func (w *Writer) Flush(bit Bit) {
-	w.setError(w.bw.Flush(bit))
+	w.SetError(w.bw.Flush(bit))
 }
 
 func (w *Writer) IsAligned() bool {
