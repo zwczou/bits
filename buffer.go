@@ -7,6 +7,12 @@ type bufReader struct {
 	idx int
 }
 
+func NewBufferReader(buf []byte) *bufReader {
+	return &bufReader{
+		buf: buf,
+	}
+}
+
 func (r *bufReader) Read(b []byte) (n int, err error) {
 	size := len(r.buf) - r.idx
 	if size <= 0 {
@@ -25,6 +31,12 @@ func (r *bufReader) Read(b []byte) (n int, err error) {
 type bufWriter struct {
 	buf []byte
 	idx int
+}
+
+func NewBufferWriter(buf []byte) *bufWriter {
+	return &bufWriter{
+		buf: buf,
+	}
 }
 
 func (w *bufWriter) Write(b []byte) (n int, err error) {

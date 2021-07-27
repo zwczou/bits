@@ -8,7 +8,7 @@ import (
 
 func TestBitReader(t *testing.T) {
 	buf := []byte{1, 2, 3, 7}
-	r := NewBitReaderBuffer(buf)
+	r := NewBitReader(NewBufferReader(buf))
 	for i := 0; i < 7; i++ {
 		b, err := r.ReadBit()
 		if err != nil {
@@ -85,7 +85,7 @@ func TestBitReader(t *testing.T) {
 
 func TestBitWriter(t *testing.T) {
 	buf := make([]byte, 8)
-	w := NewBitWriterBuffer(buf)
+	w := NewBitWriter(NewBufferWriter(buf))
 	for i := 0; i < 8; i++ {
 		if (i+1)%4 == 0 {
 			w.WriteBit(true)

@@ -24,7 +24,7 @@ func NewReader(ir io.Reader) *Reader {
 
 func NewReaderBuffer(buf []byte) *Reader {
 	return &Reader{
-		br:         NewBitReaderBuffer(buf),
+		br:         NewBitReader(NewBufferReader(buf)),
 		checkError: Must(),
 	}
 }
@@ -59,10 +59,6 @@ func (r *Reader) Index() int {
 
 func (r *Reader) Reset(ir io.Reader) {
 	r.br.Reset(ir)
-}
-
-func (r *Reader) ResetBuffer(buf []byte) {
-	r.br.Reset(&bufReader{buf: buf})
 }
 
 func (r *Reader) Reader() io.Reader {

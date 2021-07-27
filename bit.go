@@ -26,14 +26,6 @@ func NewBitReader(r io.Reader) *BitReader {
 	}
 }
 
-func NewBitReaderBuffer(buf []byte) *BitReader {
-	return &BitReader{
-		r: &bufReader{
-			buf: buf,
-		},
-	}
-}
-
 func (br *BitReader) Reader() io.Reader {
 	return br.r
 }
@@ -178,15 +170,6 @@ type BitWriter struct {
 func NewBitWriter(w io.Writer) *BitWriter {
 	return &BitWriter{
 		w:     w,
-		count: 8,
-	}
-}
-
-func NewBitWriterBuffer(buf []byte) *BitWriter {
-	return &BitWriter{
-		w: &bufWriter{
-			buf: buf,
-		},
 		count: 8,
 	}
 }
