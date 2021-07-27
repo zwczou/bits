@@ -57,6 +57,10 @@ func (w *Writer) Reset(iw io.Writer) {
 	w.bw.Reset(iw)
 }
 
+func (w *Writer) ResetBuffer(buf []byte) {
+	w.bw.Reset(&bufWriter{buf: buf})
+}
+
 func (w *Writer) Resume(data byte, count uint8) {
 	w.bw.Resume(data, count)
 }

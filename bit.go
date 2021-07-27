@@ -34,6 +34,10 @@ func NewBitReaderBuffer(buf []byte) *BitReader {
 	}
 }
 
+func (br *BitReader) Reader() io.Reader {
+	return br.r
+}
+
 func (br *BitReader) Index() int {
 	return br.idx
 }
@@ -185,6 +189,10 @@ func NewBitWriterBuffer(buf []byte) *BitWriter {
 		},
 		count: 8,
 	}
+}
+
+func (bw *BitWriter) Writer() io.Writer {
+	return bw.w
 }
 
 func (bw *BitWriter) Index() int {

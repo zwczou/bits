@@ -61,6 +61,14 @@ func (r *Reader) Reset(ir io.Reader) {
 	r.br.Reset(ir)
 }
 
+func (r *Reader) ResetBuffer(buf []byte) {
+	r.br.Reset(&bufReader{buf: buf})
+}
+
+func (r *Reader) Reader() io.Reader {
+	return r.br.Reader()
+}
+
 func (r *Reader) Read(b []byte) int {
 	n, err := r.br.Read(b)
 	r.setError(err)
