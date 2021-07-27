@@ -8,15 +8,18 @@ type bufReader struct {
 }
 
 func (r *bufReader) Read(b []byte) (n int, err error) {
-	// 长度不够报错, 证明解包有问题
-	if len(b) > len(r.buf)-r.idx {
-		err = io.ErrUnexpectedEOF
-		return
+	size := len(r.buf) - r.idx
+	if size <= 0 {
+		return 0, io.EOF
 	}
 
-	copy(b, r.buf[r.idx:r.idx+len(b)])
-	r.idx += len(b)
-	return len(b), nil
+	if len(b) < size {
+		size = len(b)
+	}
+
+	copy(b, r.buf[r.idx:r.idx+size])
+	r.idx += size
+	return size, nil
 }
 
 type bufWriter struct {
@@ -27,12 +30,15 @@ type bufWriter struct {
 func (w *bufWriter) Write(b []byte) (n int, err error) {
 	// 如果长度不够，不是写入剩下长度，而是直接报错
 	// 证明上级分配长度不够
-	if len(b) > len(w.buf)-w.idx {
-		err = io.ErrUnexpectedEOF
-		return
+	size := len(w.buf) - w.idx
+	if size <= 0 {
+		return 0, io.EOF
+	}
+	if len(b) < size {
+		size = len(b)
 	}
 
-	copy(w.buf[w.idx:], b)
-	w.idx += len(b)
-	return len(b), nil
+	copy(w.buf[w.idx:], b[:size])
+	w.idx += size
+	return size, nil
 }

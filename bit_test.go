@@ -54,7 +54,7 @@ func TestBitReader(t *testing.T) {
 		t.FailNow()
 	}
 	_, err = r.ReadBit()
-	if err != io.ErrUnexpectedEOF {
+	if err != io.EOF {
 		t.Fatal(err)
 	}
 
@@ -119,7 +119,7 @@ func TestBitWriter(t *testing.T) {
 		t.FailNow()
 	}
 	err := w.WriteByte(1)
-	if err != io.ErrUnexpectedEOF {
+	if err != io.EOF {
 		t.FailNow()
 	}
 }
